@@ -1,6 +1,6 @@
 # Objective
 
-Generate a **meaningful, balanced, and insightful personal work summary** for a specific time period.
+Generate a **meaningful, balanced, and insightful personal work summary** taking in considerations the files under the folder {{REPORT_FOLDER}}. 
 
 Look across all my Microsoft 365 activity — calendar events, emails, Teams messages and chats, and files — to build a complete picture of where I spent my time and what I accomplished. Write this as something I can reflect on personally, but that I could also share with my manager.
 

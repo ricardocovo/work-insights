@@ -1,6 +1,6 @@
 # Objective
 
-For Client **{{CLIENT}}**: Identify *key activities and insights* from recent client interactions by analyzing meetings, documents, and email threads. Surface correlations and meaningful trends across internal and external communications.
+For Client **{{CLIENT}}**: Identify *key activities and insights* from client interactions between **{{FROM}}** and **{{TO}}** by analyzing meetings, documents, and email threads. Surface correlations and meaningful trends across internal and external communications.
 
 ---
 
