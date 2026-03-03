@@ -1,10 +1,12 @@
 # Objective
 
-Generate a **meaningful, balanced, and insightful personal work summary** taking in considerations the files under the folder {{REPORT_FOLDER}}. 
+Generate a **meaningful, balanced, and insightful personal work summary** taking in considerations the markdown files on this folder.
 
 Look across all my Microsoft 365 activity — calendar events, emails, Teams messages and chats, and files — to build a complete picture of where I spent my time and what I accomplished. Write this as something I can reflect on personally, but that I could also share with my manager.
 
 Use a **balanced tone**: short narrative paragraphs for context and judgment, with bullet points for details and specifics. Cite sources where possible.
+
+Your output should be a summary markdown file the name "Summary.md".
 
 ---
 
@@ -46,3 +48,4 @@ Based on what happened this period, what is clearly building or gaining momentum
 - Do not invent or infer activities that are not grounded in signals (calendar, email, Teams, files).
 - If a category has no meaningful activity, say so briefly rather than padding.
 - Keep the total summary **readable in under 5 minutes**.
+- 

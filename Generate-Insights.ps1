@@ -260,37 +260,28 @@ if (Test-Path $internalPromptFile) {
 # --- Summarize all reports ---
 $summarizePromptFile = Join-Path (Join-Path $scriptDir "prompts") "summarize.md"
 if (Test-Path $summarizePromptFile) {
-    $summarizePrompt = (Get-Content $summarizePromptFile -Raw) -replace '\{\{REPORT_FOLDER\}\}', $reportDir
+    $summarizePrompt = Get-Content $summarizePromptFile -Raw
     $summarizeOutFile = Join-Path $reportDir "Summary.md"
-    $fullPrompt = "$summarizePrompt`n`nOutput the full summary as Markdown to stdout. Do not write any files."
     Write-Host "[Summary] Running Copilot summarization..." -NoNewline
 
     try {
         $prevEAP = $ErrorActionPreference
         $ErrorActionPreference = "Continue"
-        $copilotOutput = & copilot -p $fullPrompt --allow-tool read_file --allow-all-paths 2>&1
+        Push-Location $reportDir
+        & copilot -p "$summarizePrompt" --allow-all-tools --allow-all-paths > $null 2>&1
+        Pop-Location
         $ErrorActionPreference = $prevEAP
 
-        # Extract only the markdown content: from the first heading/separator to before the session stats footer
-        $allOutput = $copilotOutput -join "`n"
-        $mdMatch = [regex]::Match($allOutput, '(?s)(^#{1,6} |^---\s*\n)(.*?)(?=\nTotal usage est:|\nSystem\.Management|$)')
-        $summaryText = if ($mdMatch.Success) { $mdMatch.Value.Trim() } else { "" }
-
-        if ($summaryText.Trim()) {
-            $header = "# Summary - Activity Report`n"
-            $header += "**Period:** $periodLabel`n"
-            $header += "**Generated:** $(Get-Date -Format 'yyyy-MM-dd HH:mm')`n"
-            $header += "`n---`n`n"
-            Set-Content -Path $summarizeOutFile -Value ($header + $summaryText.Trim()) -Encoding UTF8
+        if (Test-Path $summarizeOutFile) {
             Write-Host " Done -> $summarizeOutFile"
             $successes += "Summary"
         } else {
-            Write-Host " FAILED: Copilot returned no output" -ForegroundColor Red
-            if ($copilotOutput) { Write-Host ($copilotOutput -join "`n") -ForegroundColor Yellow }
+            Write-Host " FAILED: Summary.md was not created" -ForegroundColor Red
             $failures += "Summary"
         }
     }
     catch {
+        Pop-Location -ErrorAction SilentlyContinue
         Write-Host " FAILED: $_" -ForegroundColor Red
         $failures += "Summary"
     }
@@ -301,7 +292,7 @@ if (Test-Path $summarizePromptFile) {
 # --- Summary ---
 Write-Host ""
 Write-Host "=== Summary ==="
-Write-Host "Successes: $($successes.Count) / $($clients.Count + 1)"
+Write-Host "Successes: $($successes.Count)"
 if ($failures.Count -gt 0) {
     Write-Host "Failures : $($failures -join ', ')" -ForegroundColor Red
 }
