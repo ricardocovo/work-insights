@@ -96,14 +96,24 @@ The script will:
 
 ## Visualizing Reports
 
-Open `reportviewer/index.html` in any modern browser. The easiest way is with the **Live Server** extension in VS Code:
+The viewer uses `fetch()` to load `reports/index.json` and the Markdown files, which browsers block on the `file://` protocol. You must serve the folder over HTTP — opening `index.html` directly (e.g. `start reportviewer/index.html`) will show an empty sidebar.
 
-1. Right-click `reportviewer/index.html` in the Explorer and choose **Open with Live Server**.
-2. Or open it directly in a browser:
+Pick one of the following from the repo root:
 
-   ```powershell
-   start reportviewer/index.html
-   ```
+- **Live Server (VS Code extension)** — right-click `reportviewer/index.html` in the Explorer and choose **Open with Live Server**.
+- **Python**:
+
+  ```powershell
+  python -m http.server 8000
+  # then open http://localhost:8000/reportviewer/
+  ```
+
+- **Node**:
+
+  ```powershell
+  npx http-server -p 8000
+  # then open http://localhost:8000/reportviewer/
+  ```
 
 > **Note:** The index is updated automatically at the end of each `Generate-Insights.ps1` run. If you manually add or remove report files, run `Update-ReportsIndex.ps1` to rebuild it.
 
